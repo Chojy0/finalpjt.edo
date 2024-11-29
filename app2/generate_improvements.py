@@ -39,7 +39,22 @@ def initialize_rag(persist_directory="chroma_db"):
     except Exception as e:
         print(f"Error during RAG initialization: {e}")
         raise
-def generate_improvements(category, total, retrieval_chain):
+
+# async 방식으로 변경 1129 12:07
+async def generate_improvements(category, total, retrieval_chain):
+    try:
+        context = f"카테고리: {category}, 총합: {total}"
+        query = f"{context}에 대한 ESG 보고서 개선 방안을 제시해주세요."
+        print(f"Running query for category: {category} (Total: {total})")
+        result = await retrieval_chain.ainvoke({"context": context, "question": query})
+        answer = result.get('answer', str(result))
+        print(f"Generated improvements for '{category}':\n{answer}")
+        return answer
+    except Exception as e:
+        print(f"Error during generate_improvements for category '{category}': {e}")
+        return "An error occurred while generating improvement suggestions."
+
+# def generate_improvements(category, total, retrieval_chain):
     try:
         context = f"카테고리: {category}, 총합: {total}"
         query = f"{context}에 대한 ESG 보고서 개선 방안을 제시해주세요."

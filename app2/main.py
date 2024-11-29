@@ -45,7 +45,7 @@ async def main():
             category = row['구분']
             total = row['총합']
             try:
-                improvements = generate_improvements(category, total, retrieval_chain)
+                improvements = await generate_improvements(category, total, retrieval_chain)
                 print(f"Improvement Suggestions for '{category}': (Total: {total}):")
                 print(improvements)
             except Exception as e:
