@@ -36,16 +36,17 @@ async def main():
 
         # 개선 방안 생성
         try:
-            qa_chain = initialize_rag()
+            retrieval_chain = initialize_rag()
         except Exception as e:
             print(f"Error initializing RAG chain: {e}")
             return
 
         for _, row in df.iterrows():
             category = row['구분']
+            total = row['총합']
             try:
-                improvements = generate_improvements(category, qa_chain)
-                print(f"Improvement Suggestions for '{category}':")
+                improvements = generate_improvements(category, total, retrieval_chain)
+                print(f"Improvement Suggestions for '{category}': (Total: {total}):")
                 print(improvements)
             except Exception as e:
                 print(f"Error generating improvements for category '{category}': {e}")
